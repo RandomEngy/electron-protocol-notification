@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import { XmlDocument } from '@nodert-win10-rs4/windows.data.xml.dom';
 import { ToastNotification, ToastNotificationManager } from '@nodert-win10-rs4/windows.ui.notifications';
+import { sendDummyKeystroke } from 'windows-dummy-keystroke';
 import electronIsDev from 'electron-is-dev';
 import path from 'path';
 
@@ -33,6 +34,10 @@ const createWindow = (): void => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
+
+// Workaround to let AllowSetForegroundWindow succeed.
+// See https://www.npmjs.com/package/windows-dummy-keystroke for a full explanation of why this is needed.
+sendDummyKeystroke();
 
 const additionalData = { myKey: 'myValue' }
 const gotTheLock = app.requestSingleInstanceLock(additionalData)
