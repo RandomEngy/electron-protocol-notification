@@ -42,7 +42,7 @@ const additionalData = { myKey: 'myValue' }
 const gotTheLock = app.requestSingleInstanceLock(additionalData)
 
 function findProtocolUriArgument(argv: string[]): string | undefined {
-  return argv.find(argument => argument.startsWith('myapp://'));
+  return argv.find(argument => argument.startsWith('myapp:'));
 }
 
 if (!gotTheLock) {
@@ -82,15 +82,15 @@ if (!gotTheLock) {
     createWindow();
 
     const toastXmlString =
-      `<toast launch="myapp://navigate?key=value" activationType="protocol">
+      `<toast launch="myapp:navigate?key=value" activationType="protocol">
         <visual>
           <binding template="ToastText01">
             <text id="1">Click to open the app</text>
           </binding>
         </visual>
         <actions>
-          <action content="Action 1" activationType="protocol" arguments="myapp://action1" />
-          <action content="Action 2" activationType="protocol" arguments="myapp://action2" />
+          <action content="Action 1" activationType="protocol" arguments="myapp:action1" />
+          <action content="Action 2" activationType="protocol" arguments="myapp:action2" />
         </actions>
       </toast>`;
 
