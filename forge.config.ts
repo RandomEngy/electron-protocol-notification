@@ -12,8 +12,8 @@ const config: ForgeConfig = {
   packagerConfig: {
     protocols: [
       {
-        name: 'enrepro',
-        schemes: ['enrepro']
+        name: 'My App',
+        schemes: ['myapp']
       }
     ]
   },
