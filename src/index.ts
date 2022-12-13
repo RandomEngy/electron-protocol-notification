@@ -41,8 +41,15 @@ sendDummyKeystroke();
 const additionalData = { myKey: 'myValue' }
 const gotTheLock = app.requestSingleInstanceLock(additionalData)
 
-function findProtocolUriArgument(argv: string[]): string | undefined {
-  return argv.find(argument => argument.startsWith('myapp:'));
+/**
+ * Looks for a protocol argument on the command line and performs an action based on it.
+ * @param argv The command line arguments.
+ */
+function performActionOnLaunch(argv: string[]) {
+  const protcolUri = argv.find(argument => argument.startsWith('myapp:'));
+  if (protcolUri) {
+    console.log(`Handling protcol URI: ${protcolUri}`);
+  }
 }
 
 if (!gotTheLock) {
@@ -61,10 +68,7 @@ if (!gotTheLock) {
     // Someone tried to run a second instance, we should focus our window.
     console.log('Second instance launched.');
 
-    const protcolUri = findProtocolUriArgument(commandLine);
-    if (protcolUri) {
-      console.log(`Protcol URI: ${protcolUri}`);
-    }
+    performActionOnLaunch(commandLine);
 
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
@@ -80,6 +84,8 @@ if (!gotTheLock) {
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
     createWindow();
+
+    performActionOnLaunch(process.argv);
 
     const toastXmlString =
       `<toast launch="myapp:navigate?key=value" activationType="protocol">
@@ -98,7 +104,7 @@ if (!gotTheLock) {
     xmlDocument.loadXml(toastXmlString);
 
     const toast = new ToastNotification(xmlDocument);
-    toast.on('activated', () => console.info('Toast activated!'));
+    toast.on('activated', () => console.info('Toast activated'));
     toast.on('dismissed', () => console.info('Toast dismissed'));
 
     toast.tag = 'abc123';
